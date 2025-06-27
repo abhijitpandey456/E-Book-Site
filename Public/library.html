@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Romance Books | BookNest</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <header class="bg-white shadow px-6 py-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold text-purple-700">📚 BookNest - Library</h1>
+    <div class="flex space-x-4 items-center">
+      <a href="index.html" class="text-gray-600 hover:text-purple-600">Home</a>
+      <form id="searchForm" class="relative">
+        <input type="text" id="searchInput" placeholder="Search books..." 
+          class="border px-3 py-1 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500" />
+        <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-purple-700">🔍</button>
+      </form>
+    </div>
+  </header>
+
+  <section class="px-6 py-4 bg-white shadow-md flex flex-wrap gap-4">
+    <div>
+      <label class="font-semibold mr-2">Sort by:</label>
+      <select id="sortSelect" class="border rounded px-2 py-1">
+        <option value="title">Title</option>
+        <option value="author">Author</option>
+        <option value="rating">Rating</option>
+      </select>
+    </div>
+    <div>
+      <label class="font-semibold mr-2">Min. Rating:</label>
+      <select id="filterRating" class="border rounded px-2 py-1">
+        <option value="0">All</option>
+        <option value="5">★★★★★</option>
+        <option value="4">★★★★+</option>
+        <option value="3">★★★+</option>
+      </select>
+    </div>
+  </section>
+ 
+     <h1 class="text-xl font-bold text-purple-700">📚 All Books Avaliable :</h1>
+
+  <ul id="bookList" class="p-6 space-y-4">
+    <!-- Book items will appear here -->
+  </ul>
+
+  
+
+  <script>
+    const books = [
+      { title: "Fourth Wing", author: "Rebecca Yarros", rating: 4.6, link: "https://..." },
+      { title: "The Serpent & the Wings of Night", author: "Carissa Broadbent", rating: 4.5, link: "https://..." },
+      { title: "Shield of Sparrows", author: "Devney Perry", rating: 4.7, link: "" },
+      { title: "A Court of Wings and Ruin", author: "Sarah J. Maas", rating: 4.1, link: "https://..." },
+      { title: "The Bridge Kingdom", author: "Danielle L. Jensen", rating: 4.0, link: "https://..." },
+      { title: "A Court of Thorns and Roses", author: "Sarah J. Maas", rating: 4.5, link: "https://..." },
+      { title: "The Unveiling", author: "Tamara Leigh", rating: 2, link: "https://..." },
+      { title: "Marked", author: "Chantol C. Aspinall", rating: 5, link: "https://..." }
+    ];
+
+    function renderBooks(list) {
+      const ul = document.getElementById("bookList");
+      ul.innerHTML = "";
+      list.forEach(b => {
+        const li = document.createElement("li");
+        li.className = "bg-white shadow-sm rounded p-4 flex justify-between items-center";
+        li.innerHTML = `
+          <div>
+            <a href="${b.link}" target="_blank" class="text-purple-700 font-semibold hover:underline">
+              ${b.title}
+            </a>
+            <div class="text-gray-600 text-sm">${b.author}</div>
+          </div>
+          <div class="text-yellow-500">${"★".repeat(Math.round(b.rating))}</div>
+        `;
+        ul.appendChild(li);
+      });
+    }
+
+    function sortAndFilter() {
+      const sortBy = document.getElementById("sortSelect").value;
+      const minRating = parseInt(document.getElementById("filterRating").value);
+      let filtered = books.filter(b => Math.round(b.rating) >= minRating);
+
+      filtered.sort((a, b) => {
+        if (sortBy === "title") return a.title.localeCompare(b.title);
+        if (sortBy === "author") return a.author.localeCompare(b.author);
+        if (sortBy === "rating") return b.rating - a.rating;
+      });
+
+      renderBooks(filtered);
+    }
+
+    document.getElementById("sortSelect").addEventListener("change", sortAndFilter);
+    document.getElementById("filterRating").addEventListener("change", sortAndFilter);
+    renderBooks(books);
+  </script>
+<p class="text-center text-green-600 font-semibold py-6">
+  More to be added...
+</p>
+
+  <!-- Footer -->
+<footer class="bg-black text-white py-10 mt-10">
+  <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+    <!-- Library -->
+    <div>
+      <h4 class="text-lg font-semibold mb-3 text-white">Library</h4>
+      <ul class="space-y-2 text-sm">
+        <li><a href="#" class="hover:underline">Genres</a></li>
+        <li><a href="#" class="hover:underline">Languages</a></li>
+        <li><a href="#" class="hover:underline">Authors</a></li>
+      </ul>
+    </div>
+
+    <!-- Community -->
+    <div>
+      <h4 class="text-lg font-semibold mb-3 text-white">Community</h4>
+      <ul class="space-y-2 text-sm">
+        <li><a href="#" class="hover:underline">Articles</a></li>
+        <li><a href="#" class="hover:underline">Author Interviews</a></li>
+        <li><a href="#" class="hover:underline">Newsletter</a></li>
+      </ul>
+    </div>
+
+    <!-- Company -->
+    <div>
+      <h4 class="text-lg font-semibold mb-3 text-white">Company</h4>
+      <ul class="space-y-2 text-sm">
+        <li><a href="#" class="hover:underline">Author Services</a></li>
+        <li><a href="#" class="hover:underline">About / Contact</a></li>
+        <li><a href="#" class="hover:underline">Accessibility Statement</a></li>
+      </ul>
+    </div>
+
+    <!-- Follow -->
+    <div>
+      <h4 class="text-lg font-semibold mb-3 text-white">Follow</h4>
+      <ul class="space-y-2 text-sm">
+        <li><a href="#" class="hover:underline">Facebook</a></li>
+        <li><a href="#" class="hover:underline">Twitter</a></li>
+        <li><a href="#" class="hover:underline">Instagram</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="border-t border-rose-500 mt-8 pt-4 text-center text-xs text-white">
+    <p>© 2025 Advertical Media LLC. All Rights Reserved. &nbsp;&nbsp; 
+       <a href="#" class="hover:underline">Terms</a> - 
+       <a href="#" class="hover:underline">Privacy</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!--horror.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Romance Books | BookNest</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <!-- Header -->
+  <header class="bg-white shadow px-6 py-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold text-purple-700">📚 BookNest - Romance</h1>
+    <nav class="space-x-4 text-gray-600">
+      <a href="index.html" class="hover:text-purple-600">Home</a>
+      <!-- Search Bar -->
+<form action="search.html" method="get">
+  <input name="q" type="text" placeholder="Search books..." />
+  <button type="submit">Search</button>
+</form>
+
+
+    </nav>
+  </header>
+
+  <!-- Filters -->
+  <section class="px-6 py-4 flex flex-col sm:flex-row justify-between items-center bg-white shadow-md">
+    <div class="mb-2 sm:mb-0">
+      <label class="mr-2 font-semibold">Sort by:</label>
+      <select id="sortSelect" class="border rounded px-2 py-1">
+        <option value="title">Title</option>
+        <option value="author">Author</option>
+        <option value="rating">Rating</option>
+      </select>
+    </div>
+    <div>
+      <label class="mr-2 font-semibold">Rating:</label>
+      <select id="filterRating" class="border rounded px-2 py-1">
+        <option value="0">All</option>
+        <option value="5">★★★★★</option>
+        <option value="4">★★★★</option>
+        <option value="3">★★★</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- Book Grid -->
+  <section id="bookGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-8 p-7" style="height:1100px; width:1500px ;">
+    <!-- JS will insert cards here -->
+  </section>
+
+  <!-- JavaScript -->
+  <script>
+    const books = [
+        {
+    title: "Dracula",
+    author: " Bram Stoker",
+    cover: "https://www.infobooks.org/cover/dracula-bram-stoker.webp",
+    rating: 4.5,
+    desc: "Horror Fiction",
+    link: "https://www.bramstoker.org/pdf/novels/05dracula.pdf" // <-- link to the book
+  },  
+     {
+    title: "The Strange Case of Dr. Jekyll and Mr. Hyde",
+    author: "Robert Louis Stevenson",
+    cover: "https://www.infobooks.org/cover/the-strange-case-of-dr-jekyll-and-mr-hyde-robert-louis-stevenson.webp",
+    rating: 4,
+    desc: "Horror Fiction",
+    link: "https://www.google.co.in/books/edition/Strange_Case_of_Dr_Jekyll_and_Mr_Hyde/bFw1AAAAMAAJ?hl=en&gbpv=1&pg=PA2&printsec=frontcover" // <-- link to the book
+  },  
+  {
+    title: "At the Mountains of Madness",
+    author: " H. P. Lovecraft",
+    cover: "https://www.infobooks.org/cover/at-the-mountains-of-madness-h-p-lovecraft.webp",
+    rating: 3.8,
+    desc: "Horror Fiction",
+    link: "https://www.hplovecraft.com/writings/texts/fiction/mm.aspx" // <-- link to the book
+  }, 
+   {
+    title: "Frankenstein",
+    author: "Mary Shelley",
+    cover: "https://www.infobooks.org/cover/frankenstein-mary-shelley.webp",
+    rating: 4.4,
+    desc: "Gothic nove",
+    link: "https://en.wikipedia.org/wiki/Mary_Shelley#:~:text=Mary%20Wollstonecraft%20Shelley%20(UK%3A%20%2F,early%20example%20of%20science%20fiction." // <-- link to the book
+  },  
+     {
+    title: "The Phantom of the Opera",
+    author: "Gaston Leroux",
+    cover: "https://www.infobooks.org/cover/the-phantom-of-the-opera-gaston-leroux.webp",
+    rating: 4,
+    desc: "a Parisian opera house that is “haunted” by a mysterious and alluring phanto",
+    link: "https://en.wikipedia.org/wiki/The_Phantom_of_the_Opera_(novel)" // <-- link to the book
+  },        
+  
+      {
+        title: "The House on the Borderland",
+        author: " William Hope Hodgson",
+        cover: "https://www.infobooks.org/cover/the-house-on-the-borderland-william-hope-hodgson.webp",
+        rating:3.8 ,
+        link: "https://www.goodreads.com/book/show/220937.The_House_on_the_Borderland"
+      },
+      {
+        title: " The Call of Cthulhu",
+        author: "H. P. Lovecraft",
+        cover: "https://www.infobooks.org/cover/the-call-of-cthulhu-h-p-lovecraft.webp",
+        rating:4.2 ,
+        link: "https://en.wikipedia.org/wiki/The_Call_of_Cthulhu"
+      },
+      {
+        title: "Carmilla",
+        author: "Sheridan Le Fanu",
+        cover: "https://www.infobooks.org/cover/carmilla-sheridan-le-fanu.webp",
+        rating:4.2 ,
+        link: "https://www.goodreads.com/book/show/48037.Carmilla"
+      },
+       {
+        title: "The Picture of Dorian Gray",
+        author: "Oscar Wilde",
+        cover: "https://www.infobooks.org/cover/the-picture-of-dorian-gray-oscar-wilde.webp",
+        rating:4.1 ,
+        link: "https://www.goodreads.com/book/show/489732.The_Picture_of_Dorian_Gray"
+      },
+      {
+        title: "The War of the Worlds",
+        author: "H. G. Wells",
+        cover: "https://www.infobooks.org/cover/the-war-of-the-worlds-h-g-wells.webp",
+        rating: 4.4,
+        link: "https://sammicox.wordpress.com/2020/04/02/book-review-the-war-of-the-worlds-by-h-g-wells/"
+      }
+    ];
+
+    function renderBooks(list) {
+      const container = document.getElementById("bookGrid");
+      container.innerHTML = "";
+      list.forEach(book => {
+        container.innerHTML += `
+          <div class="bg-white shadow-md rounded-lg p-4 text-center">
+            <img src="${book.cover}" alt="Cover" class="w-full h-60 object-cover rounded">
+            <h4 class="text-lg font-bold mt-4">
+              <a href="${book.link}" target="_blank" class="text-purple-700 hover:underline">
+                ${book.title}
+              </a>
+            </h4>
+            <p class="text-sm text-gray-500">${book.author}</p>
+            <p class="text-yellow-500 mt-1">${"★".repeat(book.rating)}${"☆".repeat(5 - book.rating)}</p>
+            <a href="${book.link}" target="_blank" class="inline-block mt-2 bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">Read Book</a>
+          </div>`;
+      });
+    }
+
+    function sortAndFilter() {
+      const sortBy = document.getElementById("sortSelect").value;
+      const rating = parseInt(document.getElementById("filterRating").value);
+      let filtered = books.filter(b => b.rating >= rating);
+
+      if (sortBy === "title") filtered.sort((a, b) => a.title.localeCompare(b.title));
+      else if (sortBy === "author") filtered.sort((a, b) => a.author.localeCompare(b.author));
+      else if (sortBy === "rating") filtered.sort((a, b) => b.rating - a.rating);
+
+      renderBooks(filtered);
+    }
+
+    document.getElementById("sortSelect").addEventListener("change", sortAndFilter);
+    document.getElementById("filterRating").addEventListener("change", sortAndFilter);
+
+    renderBooks(books);
+  </script>
+
+<script>
+  document.getElementById("searchForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const query = document.getElementById("searchInput").value.trim();
+    if (query) {
+      window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+    }
+  });
+</script>
+
+
+    <script>
+  // Get all book titles on page load
+  document.getElementById("searchInput").addEventListener("input", function () {
+    const searchTerm = this.value.toLowerCase();
+    const cards = document.querySelectorAll(".grid .bg-white.shadow-md");
+
+    cards.forEach(card => {
+      const title = card.querySelector("h4").textContent.toLowerCase();
+      if (title.includes(searchTerm)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  });
+</script
+</body>
+</html>

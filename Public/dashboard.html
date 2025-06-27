@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard | BookNest</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+  <div class="max-w-5xl mx-auto py-10 px-6">
+    <h1 class="text-3xl font-bold text-purple-700 mb-6">📊 BookNest Dashboard</h1>
+
+    <!-- Book Requests -->
+    <div class="mb-10">
+      <h2 class="text-xl font-semibold mb-3">📨 Book Requests</h2>
+      <div id="requestsContainer" class="space-y-4"></div>
+    </div>
+
+    <!-- Reviews -->
+    <div>
+      <h2 class="text-xl font-semibold mb-3">⭐ All Reviews</h2>
+      <div id="reviewsContainer" class="space-y-4"></div>
+    </div>
+  </div>
+
+  <script>
+    // Fetch and display book requests
+    async function loadRequests() {
+      try {
+        const res = await fetch("http://localhost:5000/api/all-requests");
+        const data = await res.json();
+
+        const container = document.getElementById("requestsContainer");
+        container.innerHTML = data.map(r => `
+          <div class="bg-white p-4 rounded shadow">
+            <h3 class="font-semibold text-purple-700">${r.title}</h3>
+            <p class="text-sm text-gray-600">Author: ${r.author}</p>
+            ${r.message ? `<p class="text-gray-700 mt-1">${r.message}</p>` : ""}
+            <p class="text-xs text-gray-400 mt-2">📅 ${new Date(r.date).toLocaleString()}</p>
+          </div>
+        `).join("");
+      } catch (err) {
+        document.getElementById("requestsContainer").innerHTML = "<p class='text-red-500'>Error loading requests.</p>";
+      }
+    }
+
+    // Fetch and display reviews
+    async function loadReviews() {
+      try {
+        const res = await fetch("http://localhost:5000/api/all-reviews");
+        const data = await res.json();
+
+        const container = document.getElementById("reviewsContainer");
+        container.innerHTML = data.map(r => `
+          <div class="bg-white p-4 rounded shadow">
+            <h3 class="font-semibold text-purple-700">${r.bookTitle}</h3>
+            <div class="text-yellow-400">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</div>
+            <p class="text-gray-700 mt-1">${r.comment}</p>
+            <p class="text-xs text-gray-400 mt-2">📅 ${new Date(r.date).toLocaleString()}</p>
+          </div>
+        `).join("");
+      } catch (err) {
+        document.getElementById("reviewsContainer").innerHTML = "<p class='text-red-500'>Error loading reviews.</p>";
+      }
+    }
+
+    // Load both on page load
+    loadRequests();
+    loadReviews();
+  </script>
+</body>
+</html>

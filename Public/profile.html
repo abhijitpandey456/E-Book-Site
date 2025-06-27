@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>User Profile - BookNest</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+  <header class="bg-white shadow px-6 py-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold text-purple-700">📚 BookNest</h1>
+    <a href="index.html" class="text-sm bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700">⬅ Back to Home</a>
+  </header>
+
+  <section class="max-w-xl mx-auto mt-10 bg-white shadow p-6 rounded-lg">
+    <h2 class="text-xl font-bold text-purple-700 mb-4">👤 User Profile</h2>
+
+    <div id="userProfile" class="space-y-2">
+      <p><strong>Name:</strong> <span id="profileName">Loading...</span></p>
+      <p><strong>Username:</strong> <span id="profileUsername">Loading...</span></p>
+      <p><strong>Email:</strong> <span id="profileEmail">Loading...</span></p>
+    </div>
+    <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 mt-4 rounded hover:bg-red-700">
+  Logout
+</button>
+<button class="bg-blue-600 text-white px-4 py-2 mt-4 rounded hover:bg-red-700">
+  <a href="dashboard.html"> DASHBOARD </a>
+</button>
+
+  </section>
+  <script>
+  function logout() {
+    localStorage.removeItem("booknestUser");
+    window.location.href = "index.html";
+  }
+</script>
+
+
+  <script>
+    // Simulate retrieving user data from localStorage/sessionStorage after login
+    const user = JSON.parse(localStorage.getItem("booknestUser"));
+    if (user) {
+      document.getElementById("profileName").textContent = user.name;
+      document.getElementById("profileUsername").textContent = user.username;
+      document.getElementById("profileEmail").textContent = user.email;
+    } else {
+      document.getElementById("userProfile").innerHTML = "<p class='text-red-600'>Not logged in. Please sign in first.</p>";
+    }
+  </script>
+</body>
+</html>

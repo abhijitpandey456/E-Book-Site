@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Romance Books | BookNest</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <!-- Header -->
+  <header class="bg-white shadow px-6 py-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold text-purple-700">📚 BookNest - Romance</h1>
+    <nav class="space-x-4 text-gray-600">
+      <a href="index.html" class="hover:text-purple-600">Home</a>
+            <!-- Search Bar -->
+  <form id="searchForm" class="relative">
+    <input type="text" id="searchInput" placeholder="Search books..." 
+      class="border px-3 py-1 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500" />
+    <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 text-purple-700">
+      🔍
+    </button>
+  </form>
+    </nav>
+  </header>
+
+  <!-- Filters -->
+  <section class="px-6 py-4 flex flex-col sm:flex-row justify-between items-center bg-white shadow-md">
+    <div class="mb-2 sm:mb-0">
+      <label class="mr-2 font-semibold">Sort by:</label>
+      <select id="sortSelect" class="border rounded px-2 py-1">
+        <option value="title">Title</option>
+        <option value="author">Author</option>
+        <option value="rating">Rating</option>
+      </select>
+    </div>
+    <div>
+      <label class="mr-2 font-semibold">Rating:</label>
+      <select id="filterRating" class="border rounded px-2 py-1">
+        <option value="0">All</option>
+        <option value="5">★★★★★</option>
+        <option value="4">★★★★</option>
+        <option value="3">★★★</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- Book Grid -->
+  <section id="bookGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-5 gap-8 p-7" style="height:1100px; width:1500px ;">
+    <!-- JS will insert cards here -->
+  </section>
+
+  <!-- JavaScript -->
+  <script>
+    const books = [
+        {
+    title: "summer comes First",
+    author: "vivienne wren",
+    cover: "https://cdn-gcs.inkitt.com/vertical_storycovers/ipad_b837159caa772889699d37ea3642e0d1.jpg",
+    rating: 5,
+    desc: "Erotica romance",
+    link: "https://www.inkitt.com/stories/1449500" // <-- link to the book
+  },  
+     {
+    title: "Twin Tormentors",
+    author: "ValerianRomance",
+    cover: "https://cdn-gcs.inkitt.com/vertical_storycovers/ipad_a0acb5cefa69079effe815a668e24b9f.jpg",
+    rating: 4,
+    desc: "Erotica romance",
+    link: "https://www.inkitt.com/stories/375664" // <-- link to the book
+  },  
+  {
+    title: "Lost Coven",
+    author: "vivienne wren",
+    cover: "https://cdn-gcs.inkitt.com/vertical_storycovers/ipad_89dd090cdb100b9b1f920d39580c2fde.jpg",
+    rating: 5,
+    desc: "",
+    link: "https://www.inkitt.com/stories/1173669" // <-- link to the book
+  }, 
+   {
+    title: "Weight in Gold",
+    author: "ValerianRomance",
+    cover: "https://cdn-gcs.inkitt.com/vertical_storycovers/ipad_2334ad4b99892996234f1ae2c117821d.jpg",
+    rating: 4.8,
+    desc: "Romance",
+    link: "https://www.inkitt.com/stories/1130121" // <-- link to the book
+  },  
+     {
+    title: "Asking for It",
+    author: "Lilah Pace",
+    cover: "https://m.media-amazon.com/images/I/81GuB-J2Z8L._UF1000,1000_QL80_DpWeblab_.jpg",
+    rating: 5,
+    desc: "Exotic , Romance",
+    link: "https://continuous.epub.pub/epub/5a51ad7b7412f4000781b3bb" // <-- link to the book
+  }, 
+  {
+    title: "Make Me: Twelve Tales of Dark Desire",
+    author: "Aleatha Romig",
+    cover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1390868049i/20643858.jpg",
+    rating: 5,
+    desc: "Dark Exotic Romance",
+    link: "https://bookreadfree.com/149217/3688563" // <-- link to the book
+  }, 
+   {
+    title: "Bind And Keep Me",
+    author: "Cari Silverwood",
+    cover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1376546455i/18298854.jpg",
+    rating: 4,
+    desc: "Dark Exotic Romance",
+    link: "https://www.readanybook.com/online/610068#427351" // <-- link to the book
+  },        
+  
+      {
+        title: "Emma",
+        author: "Jane Austen",
+        cover: "https://m.media-amazon.com/images/I/71YMvGXuwKL._AC_UF1000,1000_QL80_.jpg",
+        rating: 0,
+        link: "https://www.gutenberg.org/ebooks/158"
+      },
+      {
+        title: "Healing Her Heart",
+        author: "Laura Scott",
+        cover: "https://manybooks.net/sites/default/files/styles/220x330sc/public/2018-09/LauraScott_HealingHerHeart_2500.jpg?itok=qOEQEyJx",
+        rating: 3,
+        link: "https://manybooks.net/book/151703/read#epubcfi(/6/2[cover]!/4/1:0)"
+      },
+      {
+        title: "Marked",
+        author: "Chantol C. Aspinall",
+        cover: "https://www.obooko.com/images-cache/marked-93ed620eba48dff4f7ef295125e298a5.jpg",
+        rating: 5,
+        link: "https://www.obooko.com/download-book/marked?_token=mQFWFFRSbREusskQaHx0WxHkMD02C1wjbHqzOPL9&format=pdf"
+      }
+    ];
+
+    function renderBooks(list) {
+      const container = document.getElementById("bookGrid");
+      container.innerHTML = "";
+      list.forEach(book => {
+        container.innerHTML += `
+          <div class="bg-white shadow-md rounded-lg p-4 text-center">
+            <img src="${book.cover}" alt="Cover" class="w-full h-60 object-cover rounded">
+            <h4 class="text-lg font-bold mt-4">
+              <a href="${book.link}" target="_blank" class="text-purple-700 hover:underline">
+                ${book.title}
+              </a>
+            </h4>
+            <p class="text-sm text-gray-500">${book.author}</p>
+            <p class="text-yellow-500 mt-1">${"★".repeat(book.rating)}${"☆".repeat(5 - book.rating)}</p>
+            <a href="${book.link}" target="_blank" class="inline-block mt-2 bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">Read Book</a>
+          </div>`;
+      });
+    }
+
+    function sortAndFilter() {
+      const sortBy = document.getElementById("sortSelect").value;
+      const rating = parseInt(document.getElementById("filterRating").value);
+      let filtered = books.filter(b => b.rating >= rating);
+
+      if (sortBy === "title") filtered.sort((a, b) => a.title.localeCompare(b.title));
+      else if (sortBy === "author") filtered.sort((a, b) => a.author.localeCompare(b.author));
+      else if (sortBy === "rating") filtered.sort((a, b) => b.rating - a.rating);
+
+      renderBooks(filtered);
+    }
+
+    document.getElementById("sortSelect").addEventListener("change", sortAndFilter);
+    document.getElementById("filterRating").addEventListener("change", sortAndFilter);
+
+    renderBooks(books);
+  </script>
+
+  <script>
+  document.getElementById("searchForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const query = document.getElementById("searchInput").value.trim();
+    if (query) {
+      window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+    }
+  });
+</script>
+
+
+    <script>
+  // Get all book titles on page load
+  document.getElementById("searchInput").addEventListener("input", function () {
+    const searchTerm = this.value.toLowerCase();
+    const cards = document.querySelectorAll(".grid .bg-white.shadow-md");
+
+    cards.forEach(card => {
+      const title = card.querySelector("h4").textContent.toLowerCase();
+      if (title.includes(searchTerm)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Search Results | BookNest</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <!-- Header with search -->
+  <header class="bg-white shadow px-6 py-4 flex flex-col sm:flex-row justify-between items-center">
+    <h1 class="text-xl font-bold text-purple-700 mb-2 sm:mb-0">📚 BookNest</h1>
+    <form id="searchForm" class="flex">
+      <input type="text" id="searchInput" placeholder="Search books..." class="border px-4 py-1 rounded-l-md focus:outline-none" />
+      <button type="submit" class="bg-purple-600 text-white px-4 rounded-r-md hover:bg-purple-700">Search</button>
+    </form>
+  </header>
+
+  <!-- Results -->
+  <section class="p-6">
+    <h2 class="text-2xl font-semibold mb-4 text-purple-800">Search Results</h2>
+    <div id="results" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <!-- JS inserts results -->
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-black text-white text-center py-6 mt-10">
+    <p>&copy; 2025 BookNest. All Rights Reserved.</p>
+  </footer>
+
+  <!-- JS Script -->
+  <script>
+    const books = [
+      {
+        title: "Emma",
+        author: "Jane Austen",
+        link: "https://www.gutenberg.org/ebooks/158",
+        cover: "https://i.imgur.com/dPtPZ2z.png"
+      },
+      {
+        title: "Healing Her Heart",
+        author: "Laura Scott",
+        link: "https://example.com/healing-her-heart.pdf",
+        cover: "https://i.imgur.com/jPtLZ6v.png"
+      },
+      {
+        title: "The Unveiling",
+        author: "Tamara Leigh",
+        link: "https://example.com/the-unveiling.pdf",
+        cover: "https://i.imgur.com/XYUtnUv.png"
+      },
+      {
+        title: "Marked",
+        author: "Chantol C. Aspinall",
+        link: "https://www.obooko.com/download-book/marked?format=pdf",
+        cover: "https://www.obooko.com/images-cache/marked-93ed620eba48dff4f7ef295125e298a5.jpg"
+      },
+      {
+        title: "Normal People",
+        author: "Sally Rooney",
+        link: "https://marul.ffst.hr/~bwillems/fymob/npsr.pdf",
+        cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzWXL5HyENaEABVG_fuLbsIElJdUheq9KaBg&s"
+      },
+      {
+        title: "To Kill a Mockingbird",
+        author: "Harper Lee",
+        link: "https://www.raio.org/TKMFullText.pdf",
+        cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXRlQIMnjMLzPSsblShEjA4nLp_t7haykxqA&s"
+      },
+      {
+        title: "Anna Karenina",
+        author: "Leo Tolstoy",
+        link: "https://dn790000.ca.archive.org/0/items/annakareninatols00tolsiala/annakareninatols00tolsiala.pdf",
+        cover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1546091617i/15823480.jpg"
+      },
+      {
+        title: "IT",
+        author: "Stephen King",
+        link: "https://onpdf.org/wp-content/uploads/2024/02/It-PDF-by-Stephen-King.pdf",
+        cover: "https://i.pinimg.com/736x/66/f0/d3/66f0d39e4c516bbe3ce263f178bf07d6.jpg"
+      },
+      {
+    title: "Dracula",
+    author: " Bram Stoker",
+    cover: "https://www.infobooks.org/cover/dracula-bram-stoker.webp",
+    rating: 4.5,
+    desc: "Horror Fiction",
+    link: "https://www.bramstoker.org/pdf/novels/05dracula.pdf" // <-- link to the book
+  },  
+     {
+    title: "The Strange Case of Dr. Jekyll and Mr. Hyde",
+    author: "Robert Louis Stevenson",
+    cover: "https://www.infobooks.org/cover/the-strange-case-of-dr-jekyll-and-mr-hyde-robert-louis-stevenson.webp",
+    rating: 4,
+    desc: "Horror Fiction",
+    link: "https://www.google.co.in/books/edition/Strange_Case_of_Dr_Jekyll_and_Mr_Hyde/bFw1AAAAMAAJ?hl=en&gbpv=1&pg=PA2&printsec=frontcover" // <-- link to the book
+  },  
+  {
+    title: "At the Mountains of Madness",
+    author: " H. P. Lovecraft",
+    cover: "https://www.infobooks.org/cover/at-the-mountains-of-madness-h-p-lovecraft.webp",
+    rating: 3.8,
+    desc: "Horror Fiction",
+    link: "https://www.hplovecraft.com/writings/texts/fiction/mm.aspx" // <-- link to the book
+  }, 
+   {
+    title: "Frankenstein",
+    author: "Mary Shelley",
+    cover: "https://www.infobooks.org/cover/frankenstein-mary-shelley.webp",
+    rating: 4.4,
+    desc: "Gothic nove",
+    link: "https://en.wikipedia.org/wiki/Mary_Shelley#:~:text=Mary%20Wollstonecraft%20Shelley%20(UK%3A%20%2F,early%20example%20of%20science%20fiction." // <-- link to the book
+  },  
+     {
+    title: "The Phantom of the Opera",
+    author: "Gaston Leroux",
+    cover: "https://www.infobooks.org/cover/the-phantom-of-the-opera-gaston-leroux.webp",
+    rating: 4,
+    desc: "a Parisian opera house that is “haunted” by a mysterious and alluring phanto",
+    link: "https://en.wikipedia.org/wiki/The_Phantom_of_the_Opera_(novel)" // <-- link to the book
+  },        
+  
+      {
+        title: "The House on the Borderland",
+        author: " William Hope Hodgson",
+        cover: "https://www.infobooks.org/cover/the-house-on-the-borderland-william-hope-hodgson.webp",
+        rating:3.8 ,
+        link: "https://www.goodreads.com/book/show/220937.The_House_on_the_Borderland"
+      },
+      {
+        title: " The Call of Cthulhu",
+        author: "H. P. Lovecraft",
+        cover: "https://www.infobooks.org/cover/the-call-of-cthulhu-h-p-lovecraft.webp",
+        rating:4.2 ,
+        link: "https://en.wikipedia.org/wiki/The_Call_of_Cthulhu"
+      },
+      {
+        title: "Carmilla",
+        author: "Sheridan Le Fanu",
+        cover: "https://www.infobooks.org/cover/carmilla-sheridan-le-fanu.webp",
+        rating:4.2 ,
+        link: "https://www.goodreads.com/book/show/48037.Carmilla"
+      },
+       {
+        title: "The Picture of Dorian Gray",
+        author: "Oscar Wilde",
+        cover: "https://www.infobooks.org/cover/the-picture-of-dorian-gray-oscar-wilde.webp",
+        rating:4.1 ,
+        link: "https://www.goodreads.com/book/show/489732.The_Picture_of_Dorian_Gray"
+      },
+      {
+        title: "The War of the Worlds",
+        author: "H. G. Wells",
+        cover: "https://www.infobooks.org/cover/the-war-of-the-worlds-h-g-wells.webp",
+        rating: 4.4,
+        link: "https://sammicox.wordpress.com/2020/04/02/book-review-the-war-of-the-worlds-by-h-g-wells/"
+      },
+      {
+    title: "Fourth Wing",
+    author: "Rebecca Yarros",
+    cover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1701980900i/61431922.jpg",
+    rating:4.6 ,
+    desc: "Romantic fantasy, Fantasy Fiction, High fantasy, New adult fiction",
+    link: "https://pdfdrive.com.co/wp-content/pdfh/Fourth-Wing%20-The-Empyrean-Book-1.pdf" // <-- link to the book
+  },  
+     {
+    title: "The Serpent & the Wings of Night",
+    author: "Carissa Broadbent",
+    cover: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTQsa03CWaOVKmylDc6IWiFYnH8OEGQwj_p-OB5oYGLgfAWem1bXsa0ayDvYBHW7H_7cd7CN8HUIEVRruT2fWD8POhNFH0ySA",
+    rating: 4.5,
+    desc: " Romantic fantasy, Fantasy Fiction, Romance novel",
+    link: "https://www.academia.edu/127308523/The_Serpent_and_the_Wings_of_Night_Crowns_of_Nyaxia_1_by_Carissa_Broadbent" // <-- link to the book
+  },  
+  {
+    title: "Shield of Sparrows",
+    author: "Devney Perry",
+    cover: "data:image/jpeg;base64,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",
+    rating:4.7 ,
+    desc: " Romantic fantasy, Fantasy Fiction, Romance novel, High fantasy, Dark fantasy",
+    link: "" // <-- link to the book
+  },  
+     {
+    title: "Asking for It",
+    author: "Lilah Pace",
+    cover: "https://m.media-amazon.com/images/I/81GuB-J2Z8L._UF1000,1000_QL80_DpWeblab_.jpg",
+    rating: 5,
+    desc: "Romance",
+    link: "https://continuous.epub.pub/epub/5a51ad7b7412f4000781b3bb" // <-- link to the book
+  },        
+   {
+    title: "The Bridge KingdomBook by Danielle L. Jensen",
+    author: " Danielle L. Jensen",
+    cover: "data:image/jpeg;base64,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",
+    rating:4,
+    desc: " Romantic fantasy, Fantasy Fiction, Romance novel, New adult fiction, High fantasy",
+    link: "https://img1.wsimg.com/blobby/go/89c7b94c-c3f5-47c7-8c90-2d2bf872a4dc/downloads/The%20Bridge%20Kingdom%20-%20Danielle%20L.%20Jensen.pdf?ver=1701534975206 " // <-- link to the book
+  },       
+      {
+        title: "Emma",
+        author: "Jane Austen",
+        cover: "https://m.media-amazon.com/images/I/71YMvGXuwKL._AC_UF1000,1000_QL80_.jpg",
+        rating: 0,
+        link: "https://www.gutenberg.org/ebooks/158"
+      },
+      {
+        title: "Healing Her Heart",
+        author: "Laura Scott",
+        cover: "https://manybooks.net/sites/default/files/styles/220x330sc/public/2018-09/LauraScott_HealingHerHeart_2500.jpg?itok=qOEQEyJx",
+        rating: 3,
+        link: "https://manybooks.net/book/151703/read#epubcfi(/6/2[cover]!/4/1:0)"
+      },
+      {
+        title: "The Unveiling",
+        author: "Tamara Leigh",
+        cover: "https://i.imgur.com/XYUtnUv.png",
+        rating: 2,
+        link: "https://example.com/the-unveiling.pdf"
+      },
+      {
+        title: "Marked",
+        author: "Chantol C. Aspinall",
+        cover: "https://www.obooko.com/images-cache/marked-93ed620eba48dff4f7ef295125e298a5.jpg",
+        rating: 5,
+        link: "https://www.obooko.com/download-book/marked?_token=mQFWFFRSbREusskQaHx0WxHkMD02C1wjbHqzOPL9&format=pdf"
+      },
+    ];
+
+    // Get query from URL
+    const query = new URLSearchParams(window.location.search).get("q")?.toLowerCase() || "";
+    document.getElementById("searchInput").value = query;
+
+    const filtered = books.filter(b =>
+      b.title.toLowerCase().includes(query) ||
+      b.author.toLowerCase().includes(query)
+    );
+
+    const container = document.getElementById("results");
+    if (filtered.length === 0) {
+      container.innerHTML = `<p class="text-gray-600 col-span-full">No results found for "<strong>${query}</strong>"</p>`;
+    } else {
+      filtered.forEach(book => {
+        container.innerHTML += `
+          <div class="bg-white shadow-md rounded p-4 text-center">
+            <img src="${book.cover}" alt="${book.title}" class="w-full h-60 object-cover rounded mb-2">
+            <h3 class="text-lg font-bold text-purple-700">${book.title}</h3>
+            <p class="text-sm text-gray-600">${book.author}</p>
+            <a href="${book.link}" target="_blank" class="mt-2 inline-block bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">Read</a>
+          </div>
+        `;
+      });
+    }
+
+    // Handle search from navbar
+    document.getElementById("searchForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const input = document.getElementById("searchInput").value.trim();
+      if (input) {
+        window.location.href = `search.html?q=${encodeURIComponent(input)}`;
+      }
+    });
+  </script>
+
+  
+</body>
+</html>

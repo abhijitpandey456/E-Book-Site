@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PDFMart | Share & Sell PDFs</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+  <link rel="icon" href="images/logo.png" type="image/png">
+
+</head>
+<body class="bg-gray-50 font-sans">
+  <!-- Header -->
+  <header class="bg-white shadow-md py-4 px-6 flex justify-between items-center">
+  <!-- Logo -->
+  <div class="flex items-center gap-2">
+    <img src="images/logo.png" alt="PDFMart Logo" class="w-10 h-10" />
+    <h1 class="text-xl font-bold text-purple-700">PDFERA</h1>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="space-x-4 text-gray-600">
+    <a href="views/dashboard.ejs" class="hover:text-purple-700 font-medium">Dashboard</a>
+    <a href="#upload" class="hover:text-purple-700 font-medium">Upload</a>
+    <a href="#store" class="hover:text-purple-700 font-medium">Browse</a>
+    <a href="#" onclick="showSigninModal()" class="hover:text-purple-700 font-medium">Sign In</a>
+    <span id="userProfile" class="hidden font-medium text-green-600">👤 Welcome</span>
+  </nav>
+</header>
+
+
+  <!-- Hero Section -->
+  <section class="text-center py-20 bg-gradient-to-r from-purple-500 to-indigo-500 text-white">
+    <h2 class="text-3xl md:text-5xl font-bold mb-4">Sell Your Knowledge, One PDF at a Time</h2>
+    <p class="text-lg md:text-xl mb-6">Upload notes, projects, guides – earn while helping others.</p>
+    <a href="#upload" class="bg-white text-purple-600 px-6 py-3 rounded-full font-semibold shadow hover:bg-gray-200 transition">Start Uploading</a>
+  </section>
+
+  
+<!-- ✅ Sign-Up Modal -->
+<div id="signupModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50">
+  <div class="bg-white p-6 rounded shadow-lg w-full max-w-md relative">
+
+    <!-- ❌ Close Button -->
+    <button onclick="closeSignup()" class="absolute top-2 right-2 text-2xl text-gray-600 hover:text-red-600">
+      &times;
+    </button>
+
+    <h2 class="text-2xl font-bold text-center text-purple-700 mb-4">Create Account</h2>
+
+    <form id="signupForm" onsubmit="submitSignup(event)" class="space-y-4">
+      <input type="text" id="name" placeholder="Full Name" class="w-full border p-2 rounded" required />
+      <input type="text" id="username" placeholder="Username" class="w-full border p-2 rounded" required />
+      <input type="email" id="email" placeholder="Email" class="w-full border p-2 rounded" required />
+      <input type="password" id="password" placeholder="Password" class="w-full border p-2 rounded" required />
+      <button type="submit" class="w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700">Sign Up</button>
+    </form>
+  </div>
+</div>
+
+  <!-- Upload Form -->
+<section id="upload" class="max-w-xl mx-auto mt-16 p-6 bg-white rounded shadow">
+  <h3 class="text-2xl font-bold text-gray-700 mb-4">📤 Upload a PDF</h3>
+  
+  <form id="uploadForm" class="space-y-4" enctype="multipart/form-data">
+    <input type="text" name="title" placeholder="PDF Title" class="w-full border p-2 rounded" required />
+    
+    <input type="text" name="author" placeholder="Author Name" class="w-full border p-2 rounded" required />
+    
+    <input type="number" name="price" placeholder="Price (₹)" class="w-full border p-2 rounded" required />
+    
+    <input type="file" name="pdf" class="w-full border p-2 rounded" accept="application/pdf" required />
+    
+    <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700">Upload</button>
+  </form>
+</section>
+
+
+  <!-- Product Listing -->
+  <section id="store" class="max-w-6xl mx-auto mt-20 p-4">
+    <h3 class="text-2xl font-bold text-gray-700 mb-6">🛍️ Available PDFs</h3>
+    <div id="pdfList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
+  </section>
+
+  <!-- Razorpay Payment Script -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  
+
+<script>
+  function openSignup() {
+    document.getElementById("signupModal").classList.remove("hidden");
+    document.getElementById("signupModal").classList.add("flex");
+  }
+
+  function closeSignup() {
+    document.getElementById("signupModal").classList.remove("flex");
+    document.getElementById("signupModal").classList.add("hidden");
+  }
+
+  async function submitSignup(event) {
+    event.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const username = document.getElementById("username").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    const res = await fetch("http://localhost:5000/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, username, email, password })
+    });
+
+    const message = await res.text();
+
+    if (res.ok) {
+      alert("✅ Account created!");
+      closeSignup();
+      document.getElementById("signupForm").reset();
+    } else {
+      alert("❌ " + message);
+    }
+  }
+</script>
+
+
+
+  <!-- Scripts -->
+  <script>
+    // Simulate login (replace with real API call if needed)
+    function loginUser() {
+      const dummyUser = { name: "Test User", email: "test@example.com" };
+      localStorage.setItem("user", JSON.stringify(dummyUser));
+      document.getElementById("loginButton").classList.add("hidden");
+      const profile = document.getElementById("userProfile");
+      profile.classList.remove("hidden");
+      profile.textContent = `👤 Welcome, ${dummyUser.name}`;
+    }
+
+    const user = localStorage.getItem("user");
+    if (user) {
+      document.getElementById("loginButton").classList.add("hidden");
+      document.getElementById("userProfile").classList.remove("hidden");
+      document.getElementById("userProfile").textContent = `👤 Welcome, ${JSON.parse(user).name}`;
+    }
+
+    const form = document.getElementById("uploadForm");
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  
+  const formData = new FormData(form);
+
+  const res = await fetch("http://localhost:5000/upload", {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+  alert(data.message || "Uploaded!");
+  form.reset();
+  fetchPDFs(); // Reload the listing
+});
+
+    async function fetchPDFs() {
+  const res = await fetch("http://localhost:5000/pdfs");
+  const pdfs = await res.json();
+  const container = document.getElementById("pdfList");
+
+  container.innerHTML = pdfs.map(pdf => `
+    <div class="bg-white shadow rounded p-4">
+      <h4 class="text-lg font-semibold">${pdf.title}</h4>
+      <p class="text-gray-500">By ${pdf.author}</p>
+      <p class="text-purple-600 font-bold">₹${pdf.price}</p>
+
+      <!-- Button to trigger preview -->
+      <button onclick="renderPDFPreview('http://localhost:5000/${pdf.filePath}', 'preview-${pdf._id}')" class="text-sm text-blue-600 underline mb-2">
+        📄 Render Preview
+      </button>
+
+      <!-- Preview canvas container -->
+      <div id="preview-${pdf._id}" class="space-y-2 mt-2"></div>
+
+      <!-- Buy button -->
+      <button onclick="buyPDF('${pdf._id}', '${pdf.price}')" class="mt-2 bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+        Buy Now
+      </button>
+    </div>
+  `).join("");
+}
+
+    async function buyPDF(id, amount) {
+      const options = {
+        key: "rzp_test_YourKey", // replace with real Razorpay key
+        amount: amount * 100,
+        currency: "INR",
+        name: "PDFMart",
+        description: "Download your PDF",
+        handler: function () {
+          alert("Payment successful! File will be downloaded.");
+          window.location.href = `/download/${id}`;
+        },
+        prefill: {
+          name: "PDF Buyer",
+          email: "buyer@example.com"
+        }
+      };
+      const rzp = new Razorpay(options);
+      rzp.open();
+    }
+
+    async function renderPDFPreview(url, containerId) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = ""; // clear old preview
+
+  const pdf = await pdfjsLib.getDocument(url).promise;
+  const pagesToRender = Math.min(pdf.numPages, 2); // 1 or 2 pages max
+
+  for (let i = 1; i <= pagesToRender; i++) {
+    const page = await pdf.getPage(i);
+    const scale = 0.8;
+    const viewport = page.getViewport({ scale });
+
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+
+    container.appendChild(canvas);
+    await page.render({ canvasContext: context, viewport });
+  }
+}
+
+    fetchPDFs();
+  </script>
+
+  <!-- Footer -->
+  <footer class="text-center py-6 mt-20 bg-white text-gray-500">
+    &copy; 2025 PDFMart. Built for learners, by learners. 🧠
+  </footer>
+</body>
+</html>
